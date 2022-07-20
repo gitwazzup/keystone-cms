@@ -25,6 +25,7 @@ import {
   password,
   timestamp,
   select,
+  image,
 } from '@keystone-6/core/fields'
 // The document field is a more complicated field, so it's in its own package
 // Keystone aims to have all the base field types, but you can make your own
@@ -143,6 +144,8 @@ export const lists: Lists = {
     fields: {
       name: text(),
       dataTag: text(),
+      thumbnail: image({ storage: 'local_img' }),
+      display: image({ storage: 'local_img' }),
     },
   }),
   MainForm: list({

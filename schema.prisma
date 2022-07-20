@@ -43,6 +43,16 @@ model CarModel {
   id                      String     @id @default(cuid())
   name                    String     @default("")
   dataTag                 String     @default("")
+  thumbnail_filesize      Int?
+  thumbnail_extension     String?
+  thumbnail_width         Int?
+  thumbnail_height        Int?
+  thumbnail_id            String?
+  display_filesize        Int?
+  display_extension       String?
+  display_width           Int?
+  display_height          Int?
+  display_id              String?
   from_MainForm_carModels MainForm[] @relation("MainForm_carModels")
 }
 
