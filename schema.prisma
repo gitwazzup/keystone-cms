@@ -38,3 +38,28 @@ model Tag {
   name  String @default("")
   posts Post[] @relation("Post_tags")
 }
+
+model CarModel {
+  id                      String     @id @default(cuid())
+  name                    String     @default("")
+  dataTag                 String     @default("")
+  from_MainForm_carModels MainForm[] @relation("MainForm_carModels")
+}
+
+model MainForm {
+  id        String     @id @default(cuid())
+  name      String     @default("")
+  slug      String     @unique @default("")
+  title     String     @default("")
+  subTitle  String     @default("")
+  carModels CarModel[] @relation("MainForm_carModels")
+}
+
+model SinglePageForm {
+  id        String @id @default(cuid())
+  name      String @default("")
+  slug      String @unique @default("")
+  title     String @default("")
+  subTitle  String @default("")
+  introText String @default("")
+}

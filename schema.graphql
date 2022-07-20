@@ -303,6 +303,181 @@ input TagCreateInput {
   posts: PostRelateToManyForCreateInput
 }
 
+type CarModel {
+  id: ID!
+  name: String
+  dataTag: String
+}
+
+input CarModelWhereUniqueInput {
+  id: ID
+}
+
+input CarModelWhereInput {
+  AND: [CarModelWhereInput!]
+  OR: [CarModelWhereInput!]
+  NOT: [CarModelWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  dataTag: StringFilter
+}
+
+input CarModelOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  dataTag: OrderDirection
+}
+
+input CarModelUpdateInput {
+  name: String
+  dataTag: String
+}
+
+input CarModelUpdateArgs {
+  where: CarModelWhereUniqueInput!
+  data: CarModelUpdateInput!
+}
+
+input CarModelCreateInput {
+  name: String
+  dataTag: String
+}
+
+type MainForm {
+  id: ID!
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  carModels(
+    where: CarModelWhereInput! = {}
+    orderBy: [CarModelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [CarModel!]
+  carModelsCount(where: CarModelWhereInput! = {}): Int
+}
+
+input MainFormWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
+input MainFormWhereInput {
+  AND: [MainFormWhereInput!]
+  OR: [MainFormWhereInput!]
+  NOT: [MainFormWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  slug: StringFilter
+  title: StringFilter
+  subTitle: StringFilter
+  carModels: CarModelManyRelationFilter
+}
+
+input CarModelManyRelationFilter {
+  every: CarModelWhereInput
+  some: CarModelWhereInput
+  none: CarModelWhereInput
+}
+
+input MainFormOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  slug: OrderDirection
+  title: OrderDirection
+  subTitle: OrderDirection
+}
+
+input MainFormUpdateInput {
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  carModels: CarModelRelateToManyForUpdateInput
+}
+
+input CarModelRelateToManyForUpdateInput {
+  disconnect: [CarModelWhereUniqueInput!]
+  set: [CarModelWhereUniqueInput!]
+  create: [CarModelCreateInput!]
+  connect: [CarModelWhereUniqueInput!]
+}
+
+input MainFormUpdateArgs {
+  where: MainFormWhereUniqueInput!
+  data: MainFormUpdateInput!
+}
+
+input MainFormCreateInput {
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  carModels: CarModelRelateToManyForCreateInput
+}
+
+input CarModelRelateToManyForCreateInput {
+  create: [CarModelCreateInput!]
+  connect: [CarModelWhereUniqueInput!]
+}
+
+type SinglePageForm {
+  id: ID!
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  introText: String
+}
+
+input SinglePageFormWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
+input SinglePageFormWhereInput {
+  AND: [SinglePageFormWhereInput!]
+  OR: [SinglePageFormWhereInput!]
+  NOT: [SinglePageFormWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  slug: StringFilter
+  title: StringFilter
+  subTitle: StringFilter
+  introText: StringFilter
+}
+
+input SinglePageFormOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  slug: OrderDirection
+  title: OrderDirection
+  subTitle: OrderDirection
+  introText: OrderDirection
+}
+
+input SinglePageFormUpdateInput {
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  introText: String
+}
+
+input SinglePageFormUpdateArgs {
+  where: SinglePageFormWhereUniqueInput!
+  data: SinglePageFormUpdateInput!
+}
+
+input SinglePageFormCreateInput {
+  name: String
+  slug: String
+  title: String
+  subTitle: String
+  introText: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -330,6 +505,35 @@ type Mutation {
   updateTags(data: [TagUpdateArgs!]!): [Tag]
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createCarModel(data: CarModelCreateInput!): CarModel
+  createCarModels(data: [CarModelCreateInput!]!): [CarModel]
+  updateCarModel(
+    where: CarModelWhereUniqueInput!
+    data: CarModelUpdateInput!
+  ): CarModel
+  updateCarModels(data: [CarModelUpdateArgs!]!): [CarModel]
+  deleteCarModel(where: CarModelWhereUniqueInput!): CarModel
+  deleteCarModels(where: [CarModelWhereUniqueInput!]!): [CarModel]
+  createMainForm(data: MainFormCreateInput!): MainForm
+  createMainForms(data: [MainFormCreateInput!]!): [MainForm]
+  updateMainForm(
+    where: MainFormWhereUniqueInput!
+    data: MainFormUpdateInput!
+  ): MainForm
+  updateMainForms(data: [MainFormUpdateArgs!]!): [MainForm]
+  deleteMainForm(where: MainFormWhereUniqueInput!): MainForm
+  deleteMainForms(where: [MainFormWhereUniqueInput!]!): [MainForm]
+  createSinglePageForm(data: SinglePageFormCreateInput!): SinglePageForm
+  createSinglePageForms(data: [SinglePageFormCreateInput!]!): [SinglePageForm]
+  updateSinglePageForm(
+    where: SinglePageFormWhereUniqueInput!
+    data: SinglePageFormUpdateInput!
+  ): SinglePageForm
+  updateSinglePageForms(data: [SinglePageFormUpdateArgs!]!): [SinglePageForm]
+  deleteSinglePageForm(where: SinglePageFormWhereUniqueInput!): SinglePageForm
+  deleteSinglePageForms(
+    where: [SinglePageFormWhereUniqueInput!]!
+  ): [SinglePageForm]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -384,6 +588,30 @@ type Query {
   ): [Tag!]
   tag(where: TagWhereUniqueInput!): Tag
   tagsCount(where: TagWhereInput! = {}): Int
+  carModels(
+    where: CarModelWhereInput! = {}
+    orderBy: [CarModelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [CarModel!]
+  carModel(where: CarModelWhereUniqueInput!): CarModel
+  carModelsCount(where: CarModelWhereInput! = {}): Int
+  mainForms(
+    where: MainFormWhereInput! = {}
+    orderBy: [MainFormOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [MainForm!]
+  mainForm(where: MainFormWhereUniqueInput!): MainForm
+  mainFormsCount(where: MainFormWhereInput! = {}): Int
+  singlePageForms(
+    where: SinglePageFormWhereInput! = {}
+    orderBy: [SinglePageFormOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [SinglePageForm!]
+  singlePageForm(where: SinglePageFormWhereUniqueInput!): SinglePageForm
+  singlePageFormsCount(where: SinglePageFormWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
