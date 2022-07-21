@@ -34,8 +34,37 @@ export const componentBlocks = {
     label: 'Adres',
     schema: {
       isRequired: fields.checkbox({
-        label: 'is-required',
+        label: 'Verplicht veld',
         defaultValue: true,
+      }),
+    },
+  }),
+  contact: component({
+    preview: (props) => (
+      <NotEditable style={{ display: 'block', fontSize: 12 }}>
+        <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+          <li>
+            E-mail is een{' '}
+            {props.fields.mailIsRequired.value ? 'verplicht' : 'optioneel'}{' '}
+            veld.
+          </li>
+          <li>
+            Telefoon is een{' '}
+            {props.fields.phoneIsRequired.value ? 'verplicht' : 'optioneel'}{' '}
+            veld.
+          </li>
+        </ul>
+      </NotEditable>
+    ),
+    label: 'Contact',
+    schema: {
+      mailIsRequired: fields.checkbox({
+        label: 'Verplicht e-mail',
+        defaultValue: true,
+      }),
+      phoneIsRequired: fields.checkbox({
+        label: 'Verplicht telefoon',
+        defaultValue: false,
       }),
     },
   }),
