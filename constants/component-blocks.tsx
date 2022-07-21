@@ -16,17 +16,24 @@ export const componentBlocks = {
             border: '1px dotted #CBD5E0',
             padding: 12,
           }}>
-          <div style={{ color: '#4A5568' }}>{props.fields.content.element}</div>
-          <div style={{ color: '#718096' }}>
+          <div>{props.fields.content.element}</div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
+              id="showAddress"
+              style={{ marginRight: 8 }}
               type="checkbox"
-              contentEditable="false"
+              contentEditable={false}
               checked={props.fields.showAddress.value}
               onChange={(event) =>
                 props.fields.showAddress.onChange(event.target.checked)
               }
             />
-            <label>Show address</label>
+            <label
+              contentEditable={false}
+              suppressContentEditableWarning={true}
+              htmlFor="showAddress">
+              Adres
+            </label>
           </div>
         </div>
       )
