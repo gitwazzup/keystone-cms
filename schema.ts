@@ -190,10 +190,7 @@ export const lists: Lists = {
           views: require.resolve('./constants/component-blocks'),
         },
         componentBlocks,
-        layouts: [
-          [1, 1],
-          [1, 1, 1],
-        ],
+        layouts: [[1], [1, 1], [1, 1, 1]],
       }),
     },
   }),

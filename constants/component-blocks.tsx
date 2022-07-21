@@ -1,56 +1,42 @@
 import React from 'react'
 import {
-  NotEditable,
   component,
   fields,
+  NotEditable,
 } from '@keystone-6/fields-document/component-blocks'
 
-// naming the export componentBlocks is important because the Admin UI
-// expects to find the components like on the componentBlocks export
+/**
+ * Naming the export componentBlocks is important because the Admin UI
+ * expects to find the components like on the componentBlocks export.
+ */
 export const componentBlocks = {
-  personalInfo: component({
-    preview: (props) => {
-      return (
-        <div
-          style={{
-            border: '1px dotted #CBD5E0',
-            padding: 12,
-          }}>
-          <div>{props.fields.content.element}</div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <input
-              id="showAddress"
-              style={{ marginRight: 8 }}
-              type="checkbox"
-              contentEditable={false}
-              checked={props.fields.showAddress.value}
-              onChange={(event) =>
-                props.fields.showAddress.onChange(event.target.checked)
-              }
-            />
-            <label
-              contentEditable={false}
-              suppressContentEditableWarning={true}
-              htmlFor="showAddress">
-              Adres
-            </label>
-          </div>
-        </div>
-      )
-    },
-    label: 'Personal info',
+  name: component({
+    preview: (props) => (
+      <NotEditable style={{ display: 'block', fontSize: 12 }}>
+        Vraag {props.fields.askGender.value ? '' : 'niet '}
+        om geslacht.
+      </NotEditable>
+    ),
+    label: 'Naam',
     schema: {
-      content: fields.child({
-        kind: 'block',
-        placeholder: 'Intro text...',
-        formatting: { inlineMarks: 'inherit', softBreaks: 'inherit' },
-        links: 'inherit',
-      }),
-      showAddress: fields.checkbox({
-        label: 'Show address',
+      askGender: fields.checkbox({
+        label: 'Vraag om geslacht',
         defaultValue: true,
       }),
     },
-    chromeless: true,
+  }),
+  address: component({
+    preview: (props) => (
+      <NotEditable style={{ display: 'block', fontSize: 12 }}>
+        {props.fields.isRequired.value ? 'Verplicht' : 'Optioneel'} veld.
+      </NotEditable>
+    ),
+    label: 'Adres',
+    schema: {
+      isRequired: fields.checkbox({
+        label: 'is-required',
+        defaultValue: true,
+      }),
+    },
   }),
 }
