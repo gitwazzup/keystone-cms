@@ -53,6 +53,7 @@ model CarModel {
   display_width           Int?
   display_height          Int?
   display_id              String?
+  disabled                Boolean    @default(false)
   from_MainForm_carModels MainForm[] @relation("MainForm_carModels")
 }
 
@@ -72,4 +73,5 @@ model SinglePageForm {
   title     String @default("")
   subTitle  String @default("")
   introText String @default("")
+  content   String @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }

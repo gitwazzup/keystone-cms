@@ -309,6 +309,7 @@ type CarModel {
   dataTag: String
   thumbnail: ImageFieldOutput
   display: ImageFieldOutput
+  disabled: Boolean
 }
 
 type ImageFieldOutput {
@@ -338,12 +339,19 @@ input CarModelWhereInput {
   id: IDFilter
   name: StringFilter
   dataTag: StringFilter
+  disabled: BooleanFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
 }
 
 input CarModelOrderByInput {
   id: OrderDirection
   name: OrderDirection
   dataTag: OrderDirection
+  disabled: OrderDirection
 }
 
 input CarModelUpdateInput {
@@ -351,6 +359,7 @@ input CarModelUpdateInput {
   dataTag: String
   thumbnail: ImageFieldInput
   display: ImageFieldInput
+  disabled: Boolean
 }
 
 input ImageFieldInput {
@@ -372,6 +381,7 @@ input CarModelCreateInput {
   dataTag: String
   thumbnail: ImageFieldInput
   display: ImageFieldInput
+  disabled: Boolean
 }
 
 type MainForm {
@@ -460,6 +470,11 @@ type SinglePageForm {
   title: String
   subTitle: String
   introText: String
+  content: SinglePageForm_content_Document
+}
+
+type SinglePageForm_content_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
 }
 
 input SinglePageFormWhereUniqueInput {
@@ -494,6 +509,7 @@ input SinglePageFormUpdateInput {
   title: String
   subTitle: String
   introText: String
+  content: JSON
 }
 
 input SinglePageFormUpdateArgs {
@@ -507,6 +523,7 @@ input SinglePageFormCreateInput {
   title: String
   subTitle: String
   introText: String
+  content: JSON
 }
 
 """

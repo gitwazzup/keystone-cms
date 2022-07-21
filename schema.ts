@@ -26,6 +26,7 @@ import {
   timestamp,
   select,
   image,
+  checkbox,
 } from '@keystone-6/core/fields'
 // The document field is a more complicated field, so it's in its own package
 // Keystone aims to have all the base field types, but you can make your own
@@ -37,6 +38,8 @@ import { document } from '@keystone-6/fields-document'
 // our types to a stricter subset that is type-aware of other lists in our schema
 // that Typescript cannot easily infer.
 import { Lists } from '.keystone/types'
+
+import { componentBlocks } from './constants/component-blocks'
 
 // We have a users list, a blogs list, and tags for blog posts, so they can be filtered.
 // Each property on the exported object will become the name of a list (a.k.a. the `listKey`),
@@ -146,6 +149,11 @@ export const lists: Lists = {
       dataTag: text(),
       thumbnail: image({ storage: 'local_img' }),
       display: image({ storage: 'local_img' }),
+      disabled: checkbox(),
+    },
+    description: 'Auto modellen gerelateerd aan formulieren',
+    ui: {
+      hideDelete: true,
     },
   }),
   MainForm: list({
@@ -155,7 +163,7 @@ export const lists: Lists = {
       }),
       slug: text({
         isIndexed: 'unique',
-        validation: { isRequired: true, length: { max: 8 } },
+        validation: { isRequired: true, length: { max: 24 } },
       }),
       title: text(),
       subTitle: text(),
@@ -172,11 +180,21 @@ export const lists: Lists = {
       }),
       slug: text({
         isIndexed: 'unique',
-        validation: { isRequired: true, length: { max: 8 } },
+        validation: { isRequired: true, length: { max: 24 } },
       }),
       title: text(),
       subTitle: text(),
       introText: text(),
+      content: document({
+        ui: {
+          views: require.resolve('./constants/component-blocks'),
+        },
+        componentBlocks,
+        layouts: [
+          [1, 1],
+          [1, 1, 1],
+        ],
+      }),
     },
   }),
 }
