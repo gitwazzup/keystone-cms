@@ -68,4 +68,18 @@ export const componentBlocks = {
       }),
     },
   }),
+  comments: component({
+    preview: (props) => (
+      <NotEditable style={{ display: 'block', fontSize: 12 }}>
+        {props.fields.isRequired.value ? 'Verplicht' : 'Optioneel'} veld.
+      </NotEditable>
+    ),
+    label: 'Opmerkingen',
+    schema: {
+      isRequired: fields.checkbox({
+        label: 'Verplicht',
+        defaultValue: false,
+      }),
+    },
+  }),
 }
