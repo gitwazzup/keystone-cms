@@ -156,6 +156,15 @@ export const lists: Lists = {
       hideDelete: true,
     },
   }),
+  ModelVersion: list({
+    fields: {
+      carModel: relationship({
+        ref: 'CarModel',
+      }),
+      name: text(),
+      disabled: checkbox(),
+    },
+  }),
   MainForm: list({
     fields: {
       name: text({

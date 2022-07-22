@@ -384,6 +384,61 @@ input CarModelCreateInput {
   disabled: Boolean
 }
 
+type ModelVersion {
+  id: ID!
+  carModel: CarModel
+  name: String
+  disabled: Boolean
+}
+
+input ModelVersionWhereUniqueInput {
+  id: ID
+}
+
+input ModelVersionWhereInput {
+  AND: [ModelVersionWhereInput!]
+  OR: [ModelVersionWhereInput!]
+  NOT: [ModelVersionWhereInput!]
+  id: IDFilter
+  carModel: CarModelWhereInput
+  name: StringFilter
+  disabled: BooleanFilter
+}
+
+input ModelVersionOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  disabled: OrderDirection
+}
+
+input ModelVersionUpdateInput {
+  carModel: CarModelRelateToOneForUpdateInput
+  name: String
+  disabled: Boolean
+}
+
+input CarModelRelateToOneForUpdateInput {
+  create: CarModelCreateInput
+  connect: CarModelWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ModelVersionUpdateArgs {
+  where: ModelVersionWhereUniqueInput!
+  data: ModelVersionUpdateInput!
+}
+
+input ModelVersionCreateInput {
+  carModel: CarModelRelateToOneForCreateInput
+  name: String
+  disabled: Boolean
+}
+
+input CarModelRelateToOneForCreateInput {
+  create: CarModelCreateInput
+  connect: CarModelWhereUniqueInput
+}
+
 type MainForm {
   id: ID!
   name: String
@@ -562,6 +617,15 @@ type Mutation {
   updateCarModels(data: [CarModelUpdateArgs!]!): [CarModel]
   deleteCarModel(where: CarModelWhereUniqueInput!): CarModel
   deleteCarModels(where: [CarModelWhereUniqueInput!]!): [CarModel]
+  createModelVersion(data: ModelVersionCreateInput!): ModelVersion
+  createModelVersions(data: [ModelVersionCreateInput!]!): [ModelVersion]
+  updateModelVersion(
+    where: ModelVersionWhereUniqueInput!
+    data: ModelVersionUpdateInput!
+  ): ModelVersion
+  updateModelVersions(data: [ModelVersionUpdateArgs!]!): [ModelVersion]
+  deleteModelVersion(where: ModelVersionWhereUniqueInput!): ModelVersion
+  deleteModelVersions(where: [ModelVersionWhereUniqueInput!]!): [ModelVersion]
   createMainForm(data: MainFormCreateInput!): MainForm
   createMainForms(data: [MainFormCreateInput!]!): [MainForm]
   updateMainForm(
@@ -644,6 +708,14 @@ type Query {
   ): [CarModel!]
   carModel(where: CarModelWhereUniqueInput!): CarModel
   carModelsCount(where: CarModelWhereInput! = {}): Int
+  modelVersions(
+    where: ModelVersionWhereInput! = {}
+    orderBy: [ModelVersionOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [ModelVersion!]
+  modelVersion(where: ModelVersionWhereUniqueInput!): ModelVersion
+  modelVersionsCount(where: ModelVersionWhereInput! = {}): Int
   mainForms(
     where: MainFormWhereInput! = {}
     orderBy: [MainFormOrderByInput!]! = []

@@ -40,21 +40,32 @@ model Tag {
 }
 
 model CarModel {
-  id                      String     @id @default(cuid())
-  name                    String     @default("")
-  dataTag                 String     @default("")
-  thumbnail_filesize      Int?
-  thumbnail_extension     String?
-  thumbnail_width         Int?
-  thumbnail_height        Int?
-  thumbnail_id            String?
-  display_filesize        Int?
-  display_extension       String?
-  display_width           Int?
-  display_height          Int?
-  display_id              String?
-  disabled                Boolean    @default(false)
-  from_MainForm_carModels MainForm[] @relation("MainForm_carModels")
+  id                         String         @id @default(cuid())
+  name                       String         @default("")
+  dataTag                    String         @default("")
+  thumbnail_filesize         Int?
+  thumbnail_extension        String?
+  thumbnail_width            Int?
+  thumbnail_height           Int?
+  thumbnail_id               String?
+  display_filesize           Int?
+  display_extension          String?
+  display_width              Int?
+  display_height             Int?
+  display_id                 String?
+  disabled                   Boolean        @default(false)
+  from_ModelVersion_carModel ModelVersion[] @relation("ModelVersion_carModel")
+  from_MainForm_carModels    MainForm[]     @relation("MainForm_carModels")
+}
+
+model ModelVersion {
+  id         String    @id @default(cuid())
+  carModel   CarModel? @relation("ModelVersion_carModel", fields: [carModelId], references: [id])
+  carModelId String?   @map("carModel")
+  name       String    @default("")
+  disabled   Boolean   @default(false)
+
+  @@index([carModelId])
 }
 
 model MainForm {
