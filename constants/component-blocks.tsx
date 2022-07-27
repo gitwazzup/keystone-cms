@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   component,
+  ComponentBlock,
   fields,
   FormField,
   NotEditable,
@@ -8,11 +9,60 @@ import {
 
 type Input = 'name' | 'address' | 'contact' | 'comments'
 
+interface Option {
+  label: string
+  value: string
+}
+
+const inputTypes: Option[] = [
+  {
+    label: 'Naam',
+    value: 'name',
+  },
+  {
+    label: 'Adres',
+    value: 'address',
+  },
+  {
+    label: 'Contact',
+    value: 'contact',
+  },
+  {
+    label: 'Opmerkingen',
+    value: 'comments',
+  },
+]
+
+function getOptions(
+  formField: Input
+): Record<string, FormField<boolean, undefined>> {
+  switch (formField) {
+    case 'contact':
+      return {
+        mailIsRequired: fields.checkbox({
+          label: 'Verplicht e-mail',
+          defaultValue: true,
+        }),
+        phoneIsRequired: fields.checkbox({
+          label: 'Verplicht telefoon',
+          defaultValue: false,
+        }),
+      }
+    default:
+      return {
+        [`${formField}isRequired`]: fields.checkbox({
+          label: 'Verplicht',
+          defaultValue: false,
+        }),
+      }
+  }
+}
+
 /**
  * Naming the export componentBlocks is important because the Admin UI
  * expects to find the components like on the componentBlocks export.
  */
-export const componentBlocks = {
+export const componentBlocks: Record<string, ComponentBlock> = {
   name: component({
     preview: (props) => (
       <NotEditable style={{ display: 'block', fontSize: 12 }}>
@@ -87,34 +137,35 @@ export const componentBlocks = {
   }),
   step: component({
     preview: (props) => {
-      console.log(props)
-      return <p>hoi</p>
+      const elements = props?.fields?.items?.elements
+      const hasItems = elements && elements.length > 0
+      const content = hasItems ? (
+        <div>
+          <p>Geselecteerde items:</p>
+          <ul>
+            {elements.map((element, index) => {
+              const value = element.fields.type.discriminant
+              const label = inputTypes.filter(
+                (field: Option) => field.value === value
+              )[0].label
+              return <li key={index}>{label}</li>
+            })}
+          </ul>
+        </div>
+      ) : (
+        <p>Selecteer items.</p>
+      )
+
+      return <NotEditable style={{ fontSize: 14 }}>{content}</NotEditable>
     },
-    label: 'Step',
+    label: 'Formulier',
     schema: {
       items: fields.array(
         fields.object({
           type: fields.conditional(
             fields.select({
               label: '',
-              options: [
-                {
-                  label: 'Naam',
-                  value: 'name',
-                },
-                {
-                  label: 'Adres',
-                  value: 'address',
-                },
-                {
-                  label: 'Contact',
-                  value: 'contact',
-                },
-                {
-                  label: 'Opmerkingen',
-                  value: 'comments',
-                },
-              ],
+              options: inputTypes,
               defaultValue: 'name',
             }),
             {
@@ -128,29 +179,4 @@ export const componentBlocks = {
       ),
     },
   }),
-}
-
-function getOptions(
-  formField: Input
-): Record<string, FormField<boolean, undefined>> {
-  switch (formField) {
-    case 'contact':
-      return {
-        mailIsRequired: fields.checkbox({
-          label: 'Verplicht e-mail',
-          defaultValue: true,
-        }),
-        phoneIsRequired: fields.checkbox({
-          label: 'Verplicht telefoon',
-          defaultValue: false,
-        }),
-      }
-    default:
-      return {
-        [formField]: fields.checkbox({
-          label: 'Verplicht',
-          defaultValue: false,
-        }),
-      }
-  }
 }
