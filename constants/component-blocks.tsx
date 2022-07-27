@@ -74,7 +74,6 @@ export const componentBlocks: Record<string, ComponentBlock> = {
   }),
   step: component({
     preview: (props) => {
-      console.log(props.fields)
       const elements = props?.fields?.items?.elements
       const hasItems: boolean = elements && elements.length > 0
 
