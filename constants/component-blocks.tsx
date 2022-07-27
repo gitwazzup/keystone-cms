@@ -2,8 +2,11 @@ import React from 'react'
 import {
   component,
   fields,
+  FormField,
   NotEditable,
 } from '@keystone-6/fields-document/component-blocks'
+
+type Input = 'name' | 'address' | 'contact' | 'comments'
 
 /**
  * Naming the export componentBlocks is important because the Admin UI
@@ -115,29 +118,39 @@ export const componentBlocks = {
               defaultValue: 'name',
             }),
             {
-              name: fields.checkbox({
-                label: 'Verplicht',
-              }),
-              address: fields.checkbox({
-                label: 'Verplicht',
-              }),
-              contact: fields.object({
-                mailIsRequired: fields.checkbox({
-                  label: 'Verplicht e-mail',
-                  defaultValue: true,
-                }),
-                phoneIsRequired: fields.checkbox({
-                  label: 'Verplicht telefoon',
-                  defaultValue: false,
-                }),
-              }),
-              comments: fields.checkbox({
-                label: 'Verplicht',
-              }),
+              name: fields.object(getOptions('name')),
+              address: fields.object(getOptions('address')),
+              contact: fields.object(getOptions('contact')),
+              comments: fields.object(getOptions('comments')),
             }
           ),
         })
       ),
     },
   }),
+}
+
+function getOptions(
+  formField: Input
+): Record<string, FormField<boolean, undefined>> {
+  switch (formField) {
+    case 'contact':
+      return {
+        mailIsRequired: fields.checkbox({
+          label: 'Verplicht e-mail',
+          defaultValue: true,
+        }),
+        phoneIsRequired: fields.checkbox({
+          label: 'Verplicht telefoon',
+          defaultValue: false,
+        }),
+      }
+    default:
+      return {
+        [formField]: fields.checkbox({
+          label: 'Verplicht',
+          defaultValue: false,
+        }),
+      }
+  }
 }
