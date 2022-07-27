@@ -82,4 +82,62 @@ export const componentBlocks = {
       }),
     },
   }),
+  step: component({
+    preview: (props) => {
+      console.log(props)
+      return <p>hoi</p>
+    },
+    label: 'Step',
+    schema: {
+      items: fields.array(
+        fields.object({
+          type: fields.conditional(
+            fields.select({
+              label: '',
+              options: [
+                {
+                  label: 'Naam',
+                  value: 'name',
+                },
+                {
+                  label: 'Adres',
+                  value: 'address',
+                },
+                {
+                  label: 'Contact',
+                  value: 'contact',
+                },
+                {
+                  label: 'Opmerkingen',
+                  value: 'comments',
+                },
+              ],
+              defaultValue: 'name',
+            }),
+            {
+              name: fields.checkbox({
+                label: 'Verplicht',
+              }),
+              address: fields.checkbox({
+                label: 'Verplicht',
+              }),
+              contact: fields.object({
+                mailIsRequired: fields.checkbox({
+                  label: 'Verplicht e-mail',
+                  defaultValue: true,
+                }),
+                phoneIsRequired: fields.checkbox({
+                  label: 'Verplicht telefoon',
+                  defaultValue: false,
+                }),
+              }),
+              comments: fields.checkbox({
+                label: 'Verplicht',
+              }),
+            }
+          ),
+        })
+      ),
+    },
+  }),
 }
