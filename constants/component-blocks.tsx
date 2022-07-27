@@ -11,7 +11,7 @@ type Input = 'name' | 'address' | 'contact' | 'comments'
 
 interface Option {
   label: string
-  value: string
+  value: Input
 }
 
 const inputTypes: Option[] = [
