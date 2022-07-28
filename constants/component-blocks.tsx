@@ -7,7 +7,7 @@ import {
   NotEditable,
 } from '@keystone-6/fields-document/component-blocks'
 
-enum Input {
+enum InputLabel {
   NAME = 'Naam',
   ADDRESS = 'Adres',
   CONTACT = 'Contact',
@@ -16,23 +16,23 @@ enum Input {
   CHECKBOX = 'Checkbox',
 }
 
-interface Option {
+interface Input {
   label: string
   value: string
 }
 
-function getInputs(): Option[] {
-  return Object.entries(Input).map(([key, name]) => ({
+function getInputs(): Input[] {
+  return Object.entries(InputLabel).map(([key, name]) => ({
     label: name,
     value: key.toLowerCase(),
   }))
 }
 
 function getOptions(
-  formField: Input
+  formField: InputLabel
 ): Record<string, FormField<boolean | string, undefined>> {
   switch (formField) {
-    case Input.CONTACT:
+    case InputLabel.CONTACT:
       return {
         mailIsRequired: fields.checkbox({
           label: 'Verplicht e-mail',
@@ -43,7 +43,7 @@ function getOptions(
           defaultValue: false,
         }),
       }
-    case Input.DROPDOWN:
+    case InputLabel.DROPDOWN:
       return {
         label: fields.text({
           label: 'Label',
@@ -56,7 +56,7 @@ function getOptions(
           defaultValue: false,
         }),
       }
-    case Input.CHECKBOX:
+    case InputLabel.CHECKBOX:
       return {
         label: fields.text({
           label: 'Label',
@@ -73,7 +73,7 @@ function getOptions(
       return {
         isRequired: fields.checkbox({
           label: 'Verplicht',
-          defaultValue: formField === Input.NAME,
+          defaultValue: formField === InputLabel.NAME,
         }),
       }
   }
@@ -106,7 +106,7 @@ export const componentBlocks: Record<string, ComponentBlock> = {
               {elements.map((element, index) => {
                 const value = element.fields.type.discriminant
                 const label = getInputs().filter(
-                  (field: Option) => field.value === value
+                  (field: Input) => field.value === value
                 )[0].label
                 return <li key={index}>{label}</li>
               })}
@@ -126,12 +126,12 @@ export const componentBlocks: Record<string, ComponentBlock> = {
               defaultValue: 'name',
             }),
             {
-              name: fields.object(getOptions(Input.NAME)),
-              address: fields.object(getOptions(Input.ADDRESS)),
-              contact: fields.object(getOptions(Input.CONTACT)),
-              comments: fields.object(getOptions(Input.COMMENTS)),
-              dropdown: fields.object(getOptions(Input.DROPDOWN)),
-              checkbox: fields.object(getOptions(Input.CHECKBOX)),
+              name: fields.object(getOptions(InputLabel.NAME)),
+              address: fields.object(getOptions(InputLabel.ADDRESS)),
+              contact: fields.object(getOptions(InputLabel.CONTACT)),
+              comments: fields.object(getOptions(InputLabel.COMMENTS)),
+              dropdown: fields.object(getOptions(InputLabel.DROPDOWN)),
+              checkbox: fields.object(getOptions(InputLabel.CHECKBOX)),
             }
           ),
         })
