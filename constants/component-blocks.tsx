@@ -7,7 +7,13 @@ import {
   NotEditable,
 } from '@keystone-6/fields-document/component-blocks'
 
-type Input = 'name' | 'address' | 'contact' | 'comments'
+type Input =
+  | 'name'
+  | 'address'
+  | 'contact'
+  | 'comments'
+  | 'dropdown'
+  | 'checkbox'
 
 interface Option {
   label: string
@@ -31,11 +37,19 @@ const inputTypes: Option[] = [
     label: 'Opmerkingen',
     value: 'comments',
   },
+  {
+    label: 'Dropdown',
+    value: 'dropdown',
+  },
+  {
+    label: 'Checkbox',
+    value: 'checkbox',
+  },
 ]
 
 function getOptions(
   formField: Input
-): Record<string, FormField<boolean, undefined>> {
+): Record<string, FormField<boolean | string, undefined>> {
   switch (formField) {
     case 'contact':
       return {
@@ -48,9 +62,35 @@ function getOptions(
           defaultValue: false,
         }),
       }
+    case 'dropdown':
+      return {
+        label: fields.text({
+          label: 'Label',
+        }),
+        options: fields.text({
+          label: 'Opties',
+        }),
+        isRequired: fields.checkbox({
+          label: 'Verplicht',
+          defaultValue: false,
+        }),
+      }
+    case 'checkbox':
+      return {
+        label: fields.text({
+          label: 'Label',
+        }),
+        text: fields.text({
+          label: 'Text',
+        }),
+        isRequired: fields.checkbox({
+          label: 'Verplicht',
+          defaultValue: false,
+        }),
+      }
     default:
       return {
-        [`${formField}isRequired`]: fields.checkbox({
+        isRequired: fields.checkbox({
           label: 'Verplicht',
           defaultValue: formField === 'name',
         }),
@@ -72,7 +112,7 @@ export const componentBlocks: Record<string, ComponentBlock> = {
       }),
     },
   }),
-  step: component({
+  form: component({
     preview: (props) => {
       const elements = props?.fields?.items?.elements
       const hasItems: boolean = elements && elements.length > 0
@@ -109,6 +149,8 @@ export const componentBlocks: Record<string, ComponentBlock> = {
               address: fields.object(getOptions('address')),
               contact: fields.object(getOptions('contact')),
               comments: fields.object(getOptions('comments')),
+              dropdown: fields.object(getOptions('dropdown')),
+              checkbox: fields.object(getOptions('checkbox')),
             }
           ),
         })
