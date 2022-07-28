@@ -14,6 +14,7 @@ enum InputLabel {
   COMMENTS = 'Opmerkingen',
   DROPDOWN = 'Dropdown',
   CHECKBOX = 'Checkbox',
+  TEXT = 'Tekst veld',
 }
 
 interface Input {
@@ -57,12 +58,10 @@ function getOptions(
         }),
       }
     case InputLabel.CHECKBOX:
+    case InputLabel.TEXT:
       return {
         label: fields.text({
           label: 'Label',
-        }),
-        text: fields.text({
-          label: 'Text',
         }),
         isRequired: fields.checkbox({
           label: 'Verplicht',
@@ -103,9 +102,9 @@ export const componentBlocks: Record<string, ComponentBlock> = {
           {hasItems ? 'Geselecteerde items:' : 'Selecteer items'}
           {hasItems && (
             <ul>
-              {elements.map((element, index) => {
-                const value = element.fields.type.discriminant
-                const label = getInputs().filter(
+              {elements.map((element, index: number) => {
+                const value: string = element.fields.type.discriminant
+                const label: string = getInputs().filter(
                   (field: Input) => field.value === value
                 )[0].label
                 return <li key={index}>{label}</li>
@@ -132,6 +131,7 @@ export const componentBlocks: Record<string, ComponentBlock> = {
               comments: fields.object(getOptions(InputLabel.COMMENTS)),
               dropdown: fields.object(getOptions(InputLabel.DROPDOWN)),
               checkbox: fields.object(getOptions(InputLabel.CHECKBOX)),
+              text: fields.object(getOptions(InputLabel.TEXT)),
             }
           ),
         })
