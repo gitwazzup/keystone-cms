@@ -7,51 +7,32 @@ import {
   NotEditable,
 } from '@keystone-6/fields-document/component-blocks'
 
-type Input =
-  | 'name'
-  | 'address'
-  | 'contact'
-  | 'comments'
-  | 'dropdown'
-  | 'checkbox'
+enum Input {
+  NAME = 'Naam',
+  ADDRESS = 'Adres',
+  CONTACT = 'Contact',
+  COMMENTS = 'Opmerkingen',
+  DROPDOWN = 'Dropdown',
+  CHECKBOX = 'Checkbox',
+}
 
 interface Option {
   label: string
-  value: Input
+  value: string
 }
 
-const inputTypes: Option[] = [
-  {
-    label: 'Naam',
-    value: 'name',
-  },
-  {
-    label: 'Adres',
-    value: 'address',
-  },
-  {
-    label: 'Contact',
-    value: 'contact',
-  },
-  {
-    label: 'Opmerkingen',
-    value: 'comments',
-  },
-  {
-    label: 'Dropdown',
-    value: 'dropdown',
-  },
-  {
-    label: 'Checkbox',
-    value: 'checkbox',
-  },
-]
+function getInputs(): Option[] {
+  return Object.entries(Input).map(([key, name]) => ({
+    label: name,
+    value: key.toLowerCase(),
+  }))
+}
 
 function getOptions(
   formField: Input
 ): Record<string, FormField<boolean | string, undefined>> {
   switch (formField) {
-    case 'contact':
+    case Input.CONTACT:
       return {
         mailIsRequired: fields.checkbox({
           label: 'Verplicht e-mail',
@@ -62,7 +43,7 @@ function getOptions(
           defaultValue: false,
         }),
       }
-    case 'dropdown':
+    case Input.DROPDOWN:
       return {
         label: fields.text({
           label: 'Label',
@@ -75,7 +56,7 @@ function getOptions(
           defaultValue: false,
         }),
       }
-    case 'checkbox':
+    case Input.CHECKBOX:
       return {
         label: fields.text({
           label: 'Label',
@@ -92,7 +73,7 @@ function getOptions(
       return {
         isRequired: fields.checkbox({
           label: 'Verplicht',
-          defaultValue: formField === 'name',
+          defaultValue: formField === Input.NAME,
         }),
       }
   }
@@ -124,7 +105,7 @@ export const componentBlocks: Record<string, ComponentBlock> = {
             <ul>
               {elements.map((element, index) => {
                 const value = element.fields.type.discriminant
-                const label = inputTypes.filter(
+                const label = getInputs().filter(
                   (field: Option) => field.value === value
                 )[0].label
                 return <li key={index}>{label}</li>
@@ -141,16 +122,16 @@ export const componentBlocks: Record<string, ComponentBlock> = {
           type: fields.conditional(
             fields.select({
               label: '',
-              options: inputTypes,
+              options: getInputs(),
               defaultValue: 'name',
             }),
             {
-              name: fields.object(getOptions('name')),
-              address: fields.object(getOptions('address')),
-              contact: fields.object(getOptions('contact')),
-              comments: fields.object(getOptions('comments')),
-              dropdown: fields.object(getOptions('dropdown')),
-              checkbox: fields.object(getOptions('checkbox')),
+              name: fields.object(getOptions(Input.NAME)),
+              address: fields.object(getOptions(Input.ADDRESS)),
+              contact: fields.object(getOptions(Input.CONTACT)),
+              comments: fields.object(getOptions(Input.COMMENTS)),
+              dropdown: fields.object(getOptions(Input.DROPDOWN)),
+              checkbox: fields.object(getOptions(Input.CHECKBOX)),
             }
           ),
         })
